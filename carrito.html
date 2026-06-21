@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="productos.html">Productos</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="contacto.html">Contactanos</a>
+        <a href="https://google.com">Salir</a>
+    </nav>
+</header>
+
+<div class="carrito-container">
+
+    <h1>🛒 Mi Carrito</h1>
+
+    <ul id="lista-carrito"></ul>
+
+    <div class="resumen-compra">
+        <h2>
+            Total: ₲ <span id="total">0</span>
+        </h2>
+
+        <button onclick="comprarAhora()">
+            Pagar
+        </button>
+
+        <button onclick="vaciarCarrito()">
+            Vaciar carrito
+        </button>
+    </div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
