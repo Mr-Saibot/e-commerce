@@ -1,38 +1,33 @@
 // CONFIGURACIÓN DE API
 
 // REEMPLAZA POR TU NUEVA API KEY
-const API_KEY = "tu_api_key";
+const API_KEY = "9f55a4d8d73748a48aa63eece2473df1";
 
 
 // CARRITO
 
-let carrito =
-    JSON.parse(localStorage.getItem("carrito")) || [];
+let carrito =JSON.parse(localStorage.getItem("carrito")) || [];//busca los elementos en carrito
 
+    
+    function actualizarContador() {
+        
+        const contador = document.getElementById("contador");//asigna contador a una variable
+        
+        if (!contador) return;
+        
+        contador.textContent = carrito.length;//cuenta cuantos elementos hay en el carrito
+    }
+    
 actualizarContador();
-
-function actualizarContador() {
-
-    const contador =
-        document.getElementById("contador");
-
-    if (!contador) return;
-
-    contador.textContent =
-        carrito.length;
-}
 
 function guardarCarrito() {
 
-    localStorage.setItem(
-        "carrito",
-        JSON.stringify(carrito)
-    );
+    localStorage.setItem("carrito", JSON.stringify(carrito));//guarda los productos 
 
     actualizarContador();
 }
 
-function agregarCarrito(nombre, precio) {
+function agregarCarrito(nombre, precio) {//guarda al carrito
 
     carrito.push({
         nombre,
@@ -46,15 +41,11 @@ function agregarCarrito(nombre, precio) {
 
 function comprarAhora(nombre, precio) {
 
-    const confirmar = confirm(
-        `¿Comprar ${nombre} por ₲ ${precio.toLocaleString()}?`
-    );
+    const confirmar = confirm(`¿Comprar ${nombre} por ₲ ${precio.toLocaleString()}?`);
 
     if (confirmar) {
 
-        alert(
-            `Compra realizada\n\n${nombre}\n₲ ${precio.toLocaleString()}`
-        );
+        alert(`Compra realizada\n\n${nombre}\n₲ ${precio.toLocaleString()}`);
     }
 }
 
@@ -76,29 +67,23 @@ function vaciarCarrito() {
 // API RAWG
 async function cargarJuegos() {
 
-    const contenedor =
-        document.getElementById("productos");
+    const contenedor = document.getElementById("productos");
 
     if (!contenedor) return;
 
     try {
 
-        const respuesta = await fetch(
-            `https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`
-        );
+        const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`);//consulta a la api 
 
-        const datos =
-            await respuesta.json();
+        const datos = await respuesta.json();
 
         contenedor.innerHTML = "";
 
-        datos.results.forEach(juego => {
+        datos.results.forEach(juego => {//.results es el contenedor de lo solicitado a la api
 
-            const precio =
-                Math.floor(
-                    Math.random() * 350000
-                ) + 100000;
+            const precio = Math.floor(Math.random() * 350000) + 100000;
 
+           //inner permite insertar html a la clase card
             contenedor.innerHTML += `
                 <div class="card">
 
@@ -146,19 +131,15 @@ cargarJuegos();
 
 async function cargarDestacados() {
 
-    const contenedor =
-        document.getElementById("destacados");
+    const contenedor = document.getElementById("destacados");
 
     if (!contenedor) return;
 
     try {
 
-        const respuesta = await fetch(
-            `https://api.rawg.io/api/games?key=${API_KEY}&page_size=8`
-        );
+        const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=8`);
 
-        const datos =
-            await respuesta.json();
+        const datos = await respuesta.json();
 
         contenedor.innerHTML = "";
 
@@ -184,8 +165,7 @@ async function cargarDestacados() {
 
     } catch (error) {
 
-        contenedor.innerHTML =
-            "<p>Error al cargar los destacados.</p>";
+        contenedor.innerHTML = "<p>Error al cargar los destacados.</p>";
 
         console.error(error);
     }
@@ -194,16 +174,13 @@ cargarDestacados();
 
 function mostrarCarrito() {
 
-    const lista =
-        document.getElementById("lista-carrito");
+    const lista = document.getElementById("lista-carrito");
 
-    const totalElemento =
-        document.getElementById("total");
+    const totalElemento = document.getElementById("total");
 
     if (!lista) return;
 
-    carrito =
-        JSON.parse(localStorage.getItem("carrito")) || [];
+    carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
     lista.innerHTML = "";
 
@@ -211,47 +188,32 @@ function mostrarCarrito() {
 
     carrito.forEach(producto => {
 
-        const li =
-            document.createElement("li");
+        const li = document.createElement("li");
 
-        li.textContent =
-            producto.nombre +
-            " - ₲ " +
-            producto.precio.toLocaleString();
+        li.textContent =producto.nombre + " - ₲ " + producto.precio.toLocaleString();
 
         lista.appendChild(li);
 
         total += producto.precio;
     });
 
-    totalElemento.textContent =
-        total.toLocaleString();
+    totalElemento.textContent = total.toLocaleString();
 }
 mostrarCarrito();
 
 
 async function cargarDashboard() {
 
-    const productosElemento =
-        document.getElementById("total-productos");
+    const productosElemento = document.getElementById("total-productos");
 
     if (!productosElemento) return;
 
     try {
 
-        const respuesta = await fetch(
-            `https://api.rawg.io/api/games?key=${API_KEY}&page_size=50`
-        );
+        const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`);
 
         const datos = await respuesta.json();
-
-        // Productos
-
-        productosElemento.textContent =
-            datos.results.length;
-
-        // Categorías
-
+        productosElemento.textContent = datos.results.length;
         const categorias = new Set();
 
         datos.results.forEach(juego => {
@@ -264,20 +226,13 @@ async function cargarDashboard() {
 
         });
 
-        document.getElementById(
-            "total-categorias"
-        ).textContent = categorias.size;
+        document.getElementById("total-categorias").textContent = categorias.size;
 
         // Carrito
 
-        const carrito =
-            JSON.parse(
-                localStorage.getItem("carrito")
-            ) || [];
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-        document.getElementById(
-            "productos-carrito"
-        ).textContent = carrito.length;
+        document.getElementById("productos-carrito").textContent = carrito.length;
 
         // Total
 
@@ -289,10 +244,7 @@ async function cargarDashboard() {
 
         });
 
-        document.getElementById(
-            "total-carrito"
-        ).textContent =
-            "₲ " + total.toLocaleString();
+        document.getElementById("total-carrito").textContent ="₲ " + total.toLocaleString();
 
     } catch (error) {
 
