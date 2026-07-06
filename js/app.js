@@ -1,7 +1,7 @@
 // CONFIGURACIÓN DE API
 
 // REEMPLAZA POR TU NUEVA API KEY
-const API_KEY = "9f55a4d8d73748a48aa63eece2473df1";
+const API_KEY = "tu api key";
 
 
 // CARRITO
