@@ -6,27 +6,32 @@ const API_KEY = "tu api key";
 
 // CARRITO
 
-let carrito =JSON.parse(localStorage.getItem("carrito")) || [];//busca los elementos en carrito
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];//busca los elementos en carrito
 
-    
-    function actualizarContador() {
-        
-        const contador = document.getElementById("contador");//asigna contador a una variable
-        
-        if (!contador) return;
-        
-        contador.textContent = carrito.length;//cuenta cuantos elementos hay en el carrito
-    }
-    
+
+// Actualiza el contador del carrito
+function actualizarContador() {
+
+    const contador = document.getElementById("contador");//asigna contador a una variable
+
+    if (!contador) return;
+
+    contador.textContent = carrito.length;//cuenta cuantos elementos hay en el carrito
+}
+
 actualizarContador();
 
+
+// Guarda el carrito en localStorage
 function guardarCarrito() {
 
-    localStorage.setItem("carrito", JSON.stringify(carrito));//guarda los productos 
+    localStorage.setItem("carrito", JSON.stringify(carrito));//guarda los productos
 
     actualizarContador();
 }
 
+
+// Agrega un producto al carrito
 function agregarCarrito(nombre, precio) {//guarda al carrito
 
     carrito.push({
@@ -39,6 +44,8 @@ function agregarCarrito(nombre, precio) {//guarda al carrito
     alert(nombre + " agregado al carrito");
 }
 
+
+// Simula la compra de un producto
 function comprarAhora(nombre, precio) {
 
     const confirmar = confirm(`¿Comprar ${nombre} por ₲ ${precio.toLocaleString()}?`);
@@ -49,6 +56,8 @@ function comprarAhora(nombre, precio) {
     }
 }
 
+
+// Vacía completamente el carrito
 function vaciarCarrito() {
 
     if (confirm("¿Vaciar carrito?")) {
@@ -65,6 +74,8 @@ function vaciarCarrito() {
 
 
 // API RAWG
+
+// Carga los videojuegos desde la API
 async function cargarJuegos() {
 
     const contenedor = document.getElementById("productos");
@@ -73,7 +84,7 @@ async function cargarJuegos() {
 
     try {
 
-        const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`);//consulta a la api 
+        const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`);//consulta a la api
 
         const datos = await respuesta.json();
 
@@ -83,7 +94,7 @@ async function cargarJuegos() {
 
             const precio = Math.floor(Math.random() * 350000) + 100000;
 
-           //inner permite insertar html a la clase card
+            //inner permite insertar html a la clase card
             contenedor.innerHTML += `
                 <div class="card">
 
@@ -129,6 +140,8 @@ async function cargarJuegos() {
 
 cargarJuegos();
 
+
+// Carga los juegos destacados del inicio
 async function cargarDestacados() {
 
     const contenedor = document.getElementById("destacados");
@@ -170,8 +183,11 @@ async function cargarDestacados() {
         console.error(error);
     }
 }
+
 cargarDestacados();
 
+
+// Muestra los productos del carrito
 function mostrarCarrito() {
 
     const lista = document.getElementById("lista-carrito");
@@ -190,7 +206,7 @@ function mostrarCarrito() {
 
         const li = document.createElement("li");
 
-        li.textContent =producto.nombre + " - ₲ " + producto.precio.toLocaleString();
+        li.textContent = producto.nombre + " - ₲ " + producto.precio.toLocaleString();
 
         lista.appendChild(li);
 
@@ -199,9 +215,11 @@ function mostrarCarrito() {
 
     totalElemento.textContent = total.toLocaleString();
 }
+
 mostrarCarrito();
 
 
+// Carga las estadísticas del dashboard
 async function cargarDashboard() {
 
     const productosElemento = document.getElementById("total-productos");
@@ -213,7 +231,9 @@ async function cargarDashboard() {
         const respuesta = await fetch(`https://api.rawg.io/api/games?key=${API_KEY}&page_size=28`);
 
         const datos = await respuesta.json();
+
         productosElemento.textContent = datos.results.length;
+
         const categorias = new Set();
 
         datos.results.forEach(juego => {
@@ -228,13 +248,9 @@ async function cargarDashboard() {
 
         document.getElementById("total-categorias").textContent = categorias.size;
 
-        // Carrito
-
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
         document.getElementById("productos-carrito").textContent = carrito.length;
-
-        // Total
 
         let total = 0;
 
@@ -244,7 +260,7 @@ async function cargarDashboard() {
 
         });
 
-        document.getElementById("total-carrito").textContent ="₲ " + total.toLocaleString();
+        document.getElementById("total-carrito").textContent = "₲ " + total.toLocaleString();
 
     } catch (error) {
 
